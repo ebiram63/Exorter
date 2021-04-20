@@ -1,14 +1,30 @@
 <?php
 
-class Exporter{
+interface Exporteble{
+    public function export();
+}
 
-    public static function export_to_text($title,$content){
-        echo "Export to Text [$title,$content]\n ";
+interface Importeble{
+    public function export();
+}
+abstract class Exporter implements Exporteble{
+    protected $format;
+    protected $data;
+
+
+    public function __construct($data){
+        $this->data = $data;
+        if(!$this->is_valid()){
+            die("invalid Data");
+        }
+        $this->data = $data;
     }
-    public static function export_to_Pdf($title,$content){
-        echo "Export to Pdf [$title,$content]\n ";
-    }
-    public static function export_to_Json($title,$content){
-        echo "Export to Json [$title,$content]\n ";
+    public function is_valid(){
+        foreach($this->data as $field){
+            if(empty($field)){
+                return false;
+            }
+        }
+        return true;
     }
 }
